@@ -1,31 +1,32 @@
 version: '3'
 
 services:
-  postgresDB:
+  postgres_db:
     image: postgres:15
-    container_name: postgresDB
+    container_name: postgres_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     ports:
       - '5432:5432'
-    networks:
-      - book
 
   nest_test:
     depends_on:
-      - "postgresDB"
+      - "postgres_db"
     build:
-     context: ./
-     dockerfile: Dockerfile
+      context: ./
+      dockerfile: Dockerfile
     container_name: nest_test
     restart: always
-    env_file:
-      - .env
+    environment:
+      - DB_USER_NAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - PORT=3000
     ports:
       - '3000:3000'
-    networks:
-      - book
 
-networks:
-  book:
+

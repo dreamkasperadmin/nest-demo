@@ -1,5 +1,4 @@
-import bcrypt from 'bcrypt';
-import { Entity, Column, PrimaryGeneratedColumn, IsNull, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity()
 export class Book {
