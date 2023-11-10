@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GENERATED_ENV_FILE_NAME: .env
+      
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Setup Test ENV  
+      run: | 
+        echo $TEST_ENV_FILE | tr -s "###" "\n" | awk '{print "export " $1}' >> $GENERATED_ENV_FILE_NAME
+        source $GENERATED_ENV_FILE_NAME
+      env:
+        TEST_ENV_FILE: ${{ secrets.TEST_ENV_FILE }}
+
+    - name: Run Tests
+      run: npm test
